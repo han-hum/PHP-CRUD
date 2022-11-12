@@ -9,7 +9,7 @@ services:
             - 8892:80
         # links:
         #     - phpapi:phpapi
-        # volumes:
+        # volumes:        SEE VAATA KAS LIKVIDEERIB ERRORI
         #   - ./src:/var/www/html/
 
     db:
