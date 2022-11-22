@@ -15,7 +15,7 @@ services:
     db:
         image: mysql
         command: --default-authentication-plugin=mysql_native_password
-        restart: unless-stopped
+        restart: always
         environment:
             MYSQL_ROOT_PASSWORD: test
             MYSQL_DATABASE: fakeStore
@@ -27,7 +27,7 @@ services:
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
         container_name: phpmyadmin
-        restart: unless-stopped
+        restart: always
         ports:
             - 8088:80
         depends_on:
