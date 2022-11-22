@@ -3,6 +3,7 @@ header("Access-Control-Allow-Headers: *");
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=utf-8");
 header("Access-Control-Allow-Methods: GET,POST,PUT,DELETE");
+header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Origin, Cache-Control, Paragma, Authorization, Accept, Accept-Encoding");
 
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -29,7 +30,6 @@ if ($method == 'GET') { //connection to db
 
     $data = file_get_contents('php://input');
 
-
     $jsonData = json_decode($data);
 
     $title = $jsonData->title;
@@ -51,6 +51,34 @@ if ($method == 'GET') { //connection to db
         echo "Can't add a new product";
     }
     mysqli_close($con); //close connection
+
+} elseif ($method == 'PUT') {
+
+    $id = (int)$_GET['id'];
+
+    $data = file_get_contents('php://input');
+
+    $jsonData = json_decode($data);
+
+    $title = $jsonData->title;
+    $price = $jsonData->price;
+    $category = $jsonData->category;
+
+    $con = mysqli_connect('db', 'test', 'test', 'fakeStore') or 
+    die("Connection failed: " . mysqli_error());
+
+    $sql = "UPDATE products SET title='$title', price='$price', category='$category' WHERE id = '$id'";
+
+    if (mysqli_query($con, $sql)) {
+        # $last_id = mysqli_insert_id($con);
+
+        $mes = array("id" => $id, "title" => $title, "price" => $price, "category" => $category);
+    
+    echo json_encode($mes, JSON_UNESCAPED_SLASHES);
+    } else {
+        echo "Can't update a product";
+    }
+    mysqli_close($con); //close connection    
 } 
 
     else {
