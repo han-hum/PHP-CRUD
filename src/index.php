@@ -78,13 +78,31 @@ if ($method == 'GET') { //connection to db
     } else {
         echo "Can't update a product";
     }
-    mysqli_close($con); //close connection    
-} 
+    mysqli_close($con); //close connection 
+
+} elseif ($method == 'DELETE') {
+    
+    $id = (int)$_GET['id'];
+
+    $con = mysqli_connect('db', 'test', 'test', 'fakeStore') or 
+    die("Connection failed: " . mysqli_error());
+
+    $sql = "DELETE FROM products WHERE id='$id'";
+
+    if (mysqli_query($con, $sql)) {
+        http_response_code(204);
+    } else {
+        http_response_code(404);
+    }
+
+    mysqli_close($con); //close connection 
+
+    }
 
     else {
         echo json_encode(
             array('message'=>'method unknown')
         );
     }
-
 ?>
+
